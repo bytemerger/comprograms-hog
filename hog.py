@@ -44,7 +44,10 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert num_rolls >= 0, 'Cannot roll a negative number of dice.'
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     assert opponent_score < 100, 'The game should be over.'
-    "*** YOUR CODE HERE ***"
+
+    if num_rolls == 0:
+        return max(opponent_score/10, opponent_score%10) + 1
+    return roll_dice(num_rolls, dice)
 
 # Playing a game
 
@@ -59,7 +62,9 @@ def select_dice(score, opponent_score):
     >>> select_dice(0, 0) == four_sided
     True
     """
-    "*** YOUR CODE HERE ***"
+    if (score + opponent_score)%7 == 0:
+        return four_sided
+    return six_sided
 
 def other(who):
     """Return the other player, for a player WHO numbered 0 or 1.
@@ -84,8 +89,24 @@ def play(strategy0, strategy1, goal=GOAL_SCORE):
     """
     who = 0  # Which player is about to take a turn, 0 (first) or 1 (second)
     score, opponent_score = 0, 0
-    "*** YOUR CODE HERE ***"
-    return score, opponent_score  # You may wish to change this line.
+    while score < 100 and opponent_score < 100:
+        strategy = strategy0 if who == 0 else strategy1
+        strategy = 5
+        op_score = opponent_score if who == 0 else score
+        scr = score if who == 0 else opponent_score
+        dice = select_dice(scr,op_score)
+        if who == 0:
+            score += take_turn(strategy, op_score, dice)
+        else:
+            opponent_score += take_turn(strategy, op_score, dice)
+
+        if (score != 0 and opponent_score != 0):
+            if (score/opponent_score == 2 or opponent_score/score ==2):
+                old_score = score
+                score = opponent_score
+                opponent_score = old_score
+        who = other(who)
+    return score, opponent_score 
 
 #######################
 # Phase 2: Strategies #
