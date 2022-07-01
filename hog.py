@@ -31,7 +31,8 @@ def roll_dice(num_rolls, dice=six_sided):
         count += 1
     return total
 
-
+def get_bacon(opponent_score):
+    return max(opponent_score/10, opponent_score%10) + 1
 
 def take_turn(num_rolls, opponent_score, dice=six_sided):
     """Simulate a turn rolling NUM_ROLLS dice, which may be 0 (Free bacon).
@@ -46,7 +47,7 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert opponent_score < 100, 'The game should be over.'
 
     if num_rolls == 0:
-        return max(opponent_score/10, opponent_score%10) + 1
+        return get_bacon(opponent_score)
     return roll_dice(num_rolls, dice)
 
 # Playing a game
@@ -240,8 +241,10 @@ def bacon_strategy(score, opponent_score):
     >>> bacon_strategy(50, 70)
     0
     """
-    "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+    bacon = get_bacon(opponent_score)
+    if bacon >= BACON_MARGIN:
+      return 0
+    return BASELINE_NUM_ROLLS
 
 def swap_strategy(score, opponent_score):
     """This strategy rolls 0 dice when it would result in a beneficial swap and
