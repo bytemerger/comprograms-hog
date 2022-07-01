@@ -261,8 +261,15 @@ def swap_strategy(score, opponent_score):
     >>> swap_strategy(12, 12) # Baseline
     5
     """
-    "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+    bacon = get_bacon(opponent_score)
+    score += bacon
+    if opponent_score/score == 2:
+        return 0
+    if score/opponent_score == 2:
+        return BASELINE_NUM_ROLLS
+    if bacon >= BACON_MARGIN:
+        return 0
+    return BASELINE_NUM_ROLLS
 
 def final_strategy(score, opponent_score):
     """Write a brief description of your final strategy.
