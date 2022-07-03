@@ -90,16 +90,16 @@ def play(strategy0, strategy1, goal=GOAL_SCORE):
     """
     who = 0  # Which player is about to take a turn, 0 (first) or 1 (second)
     score, opponent_score = 0, 0
-    while score < 100 and opponent_score < 100:
+    while score < goal and opponent_score < goal:
         strategy = strategy0 if who == 0 else strategy1
-        strategy = 5
         op_score = opponent_score if who == 0 else score
         scr = score if who == 0 else opponent_score
         dice = select_dice(scr,op_score)
+        num_rolls = strategy(scr , op_score)
         if who == 0:
-            score += take_turn(strategy, op_score, dice)
+            score += take_turn(num_rolls, op_score, dice)
         else:
-            opponent_score += take_turn(strategy, op_score, dice)
+            opponent_score += take_turn(num_rolls, op_score, dice)
 
         if (score != 0 and opponent_score != 0):
             if (score/opponent_score == 2 or opponent_score/score ==2):
