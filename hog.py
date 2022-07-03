@@ -273,11 +273,25 @@ def swap_strategy(score, opponent_score):
 
 def final_strategy(score, opponent_score):
     """Write a brief description of your final strategy.
-
-    *** YOUR DESCRIPTION HERE ***
+    This function tries to find
+        - Find a way to leave your opponent with four-sided dice more often.
+        - If you are in the lead, you might take fewer risks. If you are losing, you might take bigger risks to catch up.
+        - Vary your rolls based on whether you will be rolling four-sided or six- sided dice.
     """
-    "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+    advantage = 20
+    # check which sided dice we are playing
+    dice = select_dice(score, opponent_score)
+    if opponent_score % 7 == 0:
+        if (score + get_bacon(opponent_score)) % 7 == 0:
+            return 0
+    # if the current score is greater than opponent score by 15 take less risk
+    roll_3 = always_roll(3)
+    if score > opponent_score + advantage:
+        return roll_3()
+
+    if score < opponent_score - advantage:
+        return max_scoring_num_rolls(20, dice)
+    return 5
 
 
 ##########################
